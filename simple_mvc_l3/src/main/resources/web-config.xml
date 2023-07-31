@@ -10,7 +10,7 @@
                            http://www.springframework.org/schema/context
                            http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <context:component-scan base-package="org.example"/>
+    <context:component-scan base-package="org.example.web"/>
     <mvc:annotation-driven/>
 
     <!--    <mvc:default-servlet-handler/>-->
@@ -36,5 +36,5 @@
         <property name="cacheable" value="true"/>
     </bean>
 
-    <mvc:view-controller path="/books/shelf" view-name="book_shelf"/>
+<!--    <mvc:view-controller path="/books/shelf" view-name="book_shelf"/>-->
 </beans>
