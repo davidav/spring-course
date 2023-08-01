@@ -10,4 +10,7 @@ public interface ProjectRepository<Book> {
     void store(Book book);
 
     boolean deleteById(Integer id);
+
+    boolean deleteByRegex(String regex);
+
 }

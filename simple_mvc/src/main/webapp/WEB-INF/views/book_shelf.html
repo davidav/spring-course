@@ -1,54 +1,107 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Book shelf</title>
     <style>
-        #root_container{
+        #root_container {
             position: absolute;
             left: 50%;
             top: 50%;
             transform: translate(-50%, -50%);
         }
+
+        #books {
+            width: 50%;
+            border-collapse: collapse;
+        }
+
+        table {
+            margin: 25px;
+        }
+
+        th {
+            text-align: left;
+        }
+
+        th, td {
+            border-bottom: 1px solid #ddd;
+        }
+
+        .error {
+            color: red;
+            margin-left: 5%;
+        }
     </style>
 </head>
 <body>
 <div id="root_container">
-    <table>
-        <tr>
-            <td>
-                <label>
-                    <input type="text" placeholder="author">
-                </label>
-            </td>
-            <td>
-                <label>
-                    <input type="text" placeholder="book_title">
-                </label>
-            </td>
-            <td>
-                <label>
-                    <input type="text" placeholder="size (pages)">
-                </label>
-            </td>
-            <td>
-                <input type="submit" value="save">
-            </td>
-        </tr>
-    </table>
 
-    <table>
-        <tr>
-            <td>
-                <label>
-                    <input type="text" placeholder="id_number">
-                </label>
-            </td>
-            <td>
-                <input type="submit" value="remove">
-            </td>
-        </tr>
-    </table>
+    <form method="post" th:action="@{/books/save}" th:object="${book}">
+        <table>
+            <tr>
+                <td>
+                    <label>
+                        <input type="text" placeholder="author" th:field="*{author}">
+                    </label>
+                </td>
+                <td>
+                    <label>
+                        <input type="text" placeholder="book_title" th:field="*{title}">
+                    </label>
+                </td>
+                <td>
+                    <label>
+                        <input type="text" placeholder="size (pages)" th:field="*{size}">
+                    </label>
+                </td>
+                <td>
+                    <input type="submit" value="save">
+                </td>
+            </tr>
+        </table>
+    </form>
+
+    <div class="error" th:if="${not #strings.isEmpty(savedError)}" th:text="*{savedError}">
+        message save error
+    </div>
+
+    <form method="post" th:action="@{/books/removeById}">
+        <table>
+            <tr>
+                <td>
+                    <label>
+                        <input type="text" placeholder="id_number" th:name="id">
+
+                    </label>
+                </td>
+                <td>
+                    <input type="submit" value="remove">
+                </td>
+            </tr>
+        </table>
+    </form>
+
+    <div class="error" th:if="${not #strings.isEmpty(deleteError)}" th:text="*{deleteError}">
+        message delete by id error
+    </div>
+
+    <form method="post" th:action="@{/books/removeByRegex}">
+        <table>
+            <tr>
+                <td>
+                    <input type="text" placeholder="regex" th:name="queryRegex">
+                </td>
+                <td>
+                    <input type="submit" value="remove by regex">
+                </td>
+            </tr>
+        </table>
+    </form>
+
+    <div class="error" th:if="${not #strings.isEmpty(regexError)}" th:text="*{regexError}">
+        message delete by regex error
+    </div>
 
     <table>
         <tr>
@@ -57,10 +110,13 @@
             <th>title</th>
             <th>size</th>
         </tr>
+        <tr th:each="book : ${bookList}">
+            <td th:text="${book.id}"></td>
+            <td th:text="${book.author}"></td>
+            <td th:text="${book.title}"></td>
+            <td th:text="${book.size}"></td>
+        </tr>
     </table>
-
-
 </div>
-
 </body>
 </html>

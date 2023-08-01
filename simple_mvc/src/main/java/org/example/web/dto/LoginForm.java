@@ -7,11 +7,6 @@ public class LoginForm {
     public LoginForm() {
     }
 
-    public LoginForm(String username, String password) {
-        this.username = username;
-        this.password = password;
-    }
-
     public String getUsername() {
         return username;
     }
@@ -26,5 +21,13 @@ public class LoginForm {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    @Override
+    public String toString() {
+        return "LoginForm{" +
+                "username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                '}';
     }
 }
