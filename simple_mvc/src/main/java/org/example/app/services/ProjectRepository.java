@@ -1,16 +1,16 @@
 package org.example.app.services;
 
+import org.example.app.exceptions.BookShelfRegExSyntaxException;
+import org.example.web.dto.RegEx;
+
 import java.util.List;
 
-public interface ProjectRepository<Book> {
+public interface ProjectRepository<T> {
+    List<T> retreiveAll();
 
+    void store(T book);
 
-    List<Book> retreiveAll();
+    boolean removeItemById(Integer bookIdToRemove);
 
-    void store(Book book);
-
-    boolean deleteById(Integer id);
-
-    boolean deleteByRegex(String regex);
-
+    void removeItemsByRegEx(RegEx regEx) throws BookShelfRegExSyntaxException;
 }

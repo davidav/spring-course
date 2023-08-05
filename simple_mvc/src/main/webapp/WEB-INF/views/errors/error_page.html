@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Error page</title>
+</head>
+<body>
+<h1>Book Shelf Error Page</h1>
+<p th:text="${errorMessage}">message</p>
+<a th:href="@{/books/shelf}">back to management page</a>
+</body>
+</html>

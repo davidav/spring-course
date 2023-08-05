@@ -2,7 +2,7 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Book shelf</title>
+    <title>My book shelf</title>
     <style>
         #root_container {
             position: absolute;
@@ -27,33 +27,24 @@
         th, td {
             border-bottom: 1px solid #ddd;
         }
-
-        .error {
-            color: red;
-            margin-left: 5%;
-        }
     </style>
 </head>
 <body>
 <div id="root_container">
-
     <form method="post" th:action="@{/books/save}" th:object="${book}">
         <table>
             <tr>
                 <td>
-                    <label>
-                        <input type="text" placeholder="author" th:field="*{author}">
-                    </label>
+                    <input type="text" placeholder="author" th:field="*{author}">
+                    <p th:if="${#fields.hasErrors('author')}">must be more than 2 letters</p>
                 </td>
                 <td>
-                    <label>
-                        <input type="text" placeholder="book_title" th:field="*{title}">
-                    </label>
+                    <input type="text" placeholder="book_title" th:field="*{title}">
+                    <p th:if="${#fields.hasErrors('title')}">title must be not empty</p>
                 </td>
                 <td>
-                    <label>
-                        <input type="text" placeholder="size (pages)" th:field="*{size}">
-                    </label>
+                    <input type="text" placeholder="size (pages)" th:field="*{size}">
+                    <p th:if="${#fields.hasErrors('size')}">must be digit and less than 4 signs</p>
                 </td>
                 <td>
                     <input type="submit" value="save">
@@ -62,48 +53,52 @@
         </table>
     </form>
 
-    <div class="error" th:if="${not #strings.isEmpty(savedError)}" th:text="*{savedError}">
-        message save error
-    </div>
-
-    <form method="post" th:action="@{/books/removeById}">
+    <form method="post" th:action="@{/books/remove}" th:object="${bookIdToRemove}">
         <table>
             <tr>
                 <td>
-                    <label>
-                        <input type="text" placeholder="id_number" th:name="id">
-
-                    </label>
+                    <input type="text" placeholder="id number" th:field="*{id}">
                 </td>
                 <td>
                     <input type="submit" value="remove">
                 </td>
+                <td th:if="${#fields.hasErrors()}">
+                    <p>wrong id or not found</p>
+                </td>
             </tr>
         </table>
     </form>
 
-    <div class="error" th:if="${not #strings.isEmpty(deleteError)}" th:text="*{deleteError}">
-        message delete by id error
-    </div>
-
-    <form method="post" th:action="@{/books/removeByRegex}">
+    <form method="post" th:action="@{/books/removeByRegex}" th:object="${regEx}">
         <table>
             <tr>
                 <td>
-                    <input type="text" placeholder="regex" th:name="queryRegex">
+                    <input type="text" placeholder="regex" th:field="*{expRegEx}">
                 </td>
                 <td>
                     <input type="submit" value="remove by regex">
                 </td>
+                <td th:if="${#fields.hasErrors()}">
+                    <p>regex must be not empty</p>
+                </td>
             </tr>
         </table>
     </form>
 
-    <div class="error" th:if="${not #strings.isEmpty(regexError)}" th:text="*{regexError}">
-        message delete by regex error
-    </div>
+    <form method="post" th:action="@{/books/uploadFile}" enctype="multipart/form-data">
+        <table>
+            <tr>
+                <td>
+                    <input type="file" name="file"/>
+                </td>
+                <td>
+                    <input type="submit" value="Upload">
+                </td>
+            </tr>
+        </table>
+    </form>
 
-    <table>
+    <table id="books">
         <tr>
             <th>id</th>
             <th>author</th>

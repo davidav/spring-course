@@ -1,15 +1,25 @@
 package org.example.web.dto;
 
-public class Book {
-    private Integer id;
-    private String author;
-    private String title;
-    private Integer size;
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
+public class Book{
+    private Integer id;
+    @NotEmpty
+    @Size(min = 2)
+    private String author;
+    @NotEmpty
+    private String title;
+    @NotNull
+    @Digits(integer = 4, fraction = 0)
+    private Integer size;
 
     public Integer getId() {
         return id;
     }
+
     public void setId(Integer id) {
         this.id = id;
     }
