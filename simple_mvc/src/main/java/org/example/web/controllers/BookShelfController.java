@@ -16,10 +16,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.util.Objects;
 
 @Controller
 @RequestMapping(value = "/books")
@@ -87,24 +83,7 @@ public class BookShelfController {
 
     @PostMapping("/uploadFile")
     public String uploadFile(@RequestParam("file") MultipartFile file) throws Exception {
-        if (file.isEmpty()){
-            throw new BookShelfEmptyNameFileException("filename must be not empty");
-        }
-        String name = file.getOriginalFilename();
-        byte[] bytes = file.getBytes();
-
-        String rootPath = System.getProperty("catalina.home");
-        File dir = new File(rootPath + File.separator + "external_uploads");
-        if (!dir.exists()) {
-            dir.mkdirs();
-        }
-
-        File serverFile = new File(dir.getAbsolutePath() + File.separator + name);
-        BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(serverFile));
-        stream.write(bytes);
-        stream.close();
-
-        logger.info("new file saved at: " + serverFile.getAbsolutePath());
+        bookService.uploadFile(file);
         return "redirect:/books/shelf";
     }
 
